@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, height=device-height , initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!-- 隐藏工具栏和菜单栏 -->
+		<meta name="format-detection" content="telephone=no">
+		<!--对电话号码的识别 -->
+		<meta name="x5-page-mode" content="app">
+		<!-- QQ应用模式 -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<!-- 避免IE使用兼容模式 -->
+		<meta name="renderer" content="webkit">
+		<meta name="msapplication-tap-highlight" content="no">
+		<title></title>
+		<style>
+			html,body,div,input{margin: 0;padding: 0;outline: none;}
+			audio{vertical-align: bottom;}
+			li{list-style: none;}
+			input[type=button]{border: none; border-radius: 5px; background-color: deepskyblue; padding: 5px 10px; color: white; cursor: pointer;}
+			input[type=button]:hover{background-color: dodgerblue;}
+			input[disabled=disabled],input[disabled=disabled]:hover{background-color: gainsboro; cursor: default;}
+		</style>
+		<script type="text/javascript" src="js/AudioMedia.js"></script>
+		
+	</head>
+
+	<body>
+		<div>
+			<ul>
+				<li>
+					<audio controls autoplay>您的浏览器版本太低，不支持audio标签</audio>
+					<input class="start" type="button" value="开始录音" onclick="startRecording(this)" />
+					<input class="stop" disabled="disabled" type="button" value="停止录音" onclick="stopRecord(this)" />
+					<input class="play" disabled="disabled" type="button" value="播放录音" onclick="playRecord()" />
+					<input class="save" disabled="disabled" type="button" value="保存录音" onclick="save(this)" />
+					<input class="upload" disabled="disabled" type="button" value="上传录音" onclick="upload()" />
+				</li>
+			</ul>
+			
+		</div>
+		<script type="text/javascript">
+			var recorder;
+			var audio = document.querySelector('audio');
+
+			function startRecording(self) {
+				self.setAttribute("disabled", "disabled");
+				self.parentNode.getElementsByClassName("stop")[0].removeAttribute("disabled");
+				AudioRecorder.get(function(rec) {
+					recorder = rec;
+					recorder.start();
+				});
+			}
+
+			function save(self) {
+				var downloadElement = recorder.saveWAV(new Date().getTime());
+				self.parentNode.appendChild(downloadElement);
+			};
+
+			function stopRecord(self) {
+				recorder.stop();
+				self.setAttribute("disabled", "disabled");
+				self.parentNode.getElementsByClassName("play")[0].removeAttribute("disabled");
+				self.parentNode.getElementsByClassName("save")[0].removeAttribute("disabled");
+			};
+
+			function playRecord() {
+				recorder.play(audio);
+			};
+		</script>
+	</body>
+
+</html>
